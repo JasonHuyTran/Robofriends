@@ -1,4 +1,4 @@
-import Card from "./Card.js"
+import Card from "../Card/Card.js"
 
 const CardList = ({robots}) => {
     const cardsArray = robots.map(user => 
