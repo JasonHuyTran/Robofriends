@@ -1,31 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import CardList from "./CardList.jsx";
+import SearchBox from "./SearchBox"
+import "./App.css"
 
-const sayHello = () => {
-  console.log("hellO");
+class App extends React.Component {
+    constructor() {
+        super();
+
+        this.state = {
+            robots: [],
+            searchField: ''
+        }
+    }
+
+    componentDidMount() {
+        fetch('https://jsonplaceholder.typicode.com/users')
+        .then(response => response.json())
+        .then(json => console.log(json))
+
+        
+    }
+
+    onSeachChange = (event) => {
+        this.setState({searchField: event.target.value})
+    }
+
+    render() {
+        const filterRobots = this.state.robots.filter(robot => {
+            return robot.name.toLocaleLowerCase().includes(this.state.searchField.toLowerCase());
+        });
+
+
+        return (
+            <div className = "tc">
+                <h1 className = "f2">RoboFriends</h1>
+                <SearchBox searchChange = {this.onSeachChange} searchField = {this.searchField}/>
+                <div>
+                    <CardList robots = {filterRobots}/>
+                </div>
+            </div>
+        );
+    }
 }
 
-function App() {
-  sayHello();
-  
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+
 
 export default App;
